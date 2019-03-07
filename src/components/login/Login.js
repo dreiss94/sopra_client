@@ -44,13 +44,13 @@ const InputField = styled.input`
   color: white;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   color: white;
   margin-bottom: 10px;
   text-transform: uppercase;
 `;
 
-const ButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -110,6 +110,9 @@ class Login extends React.Component {
         }
       });
   }
+  signup() {
+      this.props.history.push('/register')
+  }
 
   /**
    *  Every time the user enters something in the input field, the state gets updated.
@@ -155,11 +158,20 @@ class Login extends React.Component {
                 disabled={!this.state.username || !this.state.name}
                 width="50%"
                 onClick={() => {
-                  this.login();
+                    this.login();
                 }}
-              >
+            >
                 Login
-              </Button>
+            </Button>
+                <Button
+                    //disabled={!this.state.username || !this.state.name}
+                    width="25%"
+                    onClick={() => {
+                        this.signup();
+                    }}
+                >
+                    Sign up
+                </Button>
             </ButtonContainer>
           </Form>
         </FormContainer>
