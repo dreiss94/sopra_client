@@ -140,7 +140,7 @@ class Register extends React.Component {
             <BaseContainer>
                 <FormContainer>
                     <Form>
-                        <Title>Enter your credentials!</Title>
+                        <Title>Enter your credentials</Title>
                         <Label>Username</Label>
                         <ErrorLabel display={this.state.requestValid?"none":""}>username already existing.</ErrorLabel>
 
