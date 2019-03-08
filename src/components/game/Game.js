@@ -51,9 +51,9 @@ class Game extends React.Component {
                 // delays continuous execution of an async operation for 0.8 seconds.
                 // This is just a fake async call, so that the spinner can be displayed
                 // feel free to remove it :)
-                try { this.setState({userrs});}
+                try { this.setState({users});}
                 catch {
-                    alert("Sorry somethin went wrong");
+                    alert("Sorry something went wrong");
                     this.logout();
                 }
             })
