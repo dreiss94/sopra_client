@@ -25,71 +25,75 @@ const PlayerContainer = styled.li`
 `;
 
 class Game extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      users: null
-    };
-  }
+    constructor() {
+        super();
+        this.state = {
+            users: null
+        };
+    }
 
-  logout() {
-    localStorage.removeItem("token");
-    this.props.history.push("/login");
-  }
+    logout() {
+        localStorage.removeItem("token");
+        this.props.history.push("/login");
+    }
 
-  componentDidMount() {
-    fetch(`${getDomain()}/users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => response.json())
-      .then(async users => {
-        // delays continuous execution of an async operation for 0.8 seconds.
-        // This is just a fake async call, so that the spinner can be displayed
-        // feel free to remove it :)
-        await new Promise(resolve => setTimeout(resolve, 800));
+    componentDidMount() {
+        fetch(`${getDomain()}/users?token=${localStorage.getItem("token")}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => response.json(), error =>{
+                this.props.history.push("/login");
+            })
+            .then(users => {
+                // delays continuous execution of an async operation for 0.8 seconds.
+                // This is just a fake async call, so that the spinner can be displayed
+                // feel free to remove it :)
+                try { this.setState({userrs});}
+                catch {
+                    alert("Sorry somethin went wrong");
+                    this.logout();
+                }
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Something went wrong fetching the users: " + err);
+            });
+    }
 
-        this.setState({ users });
-      })
-      .catch(err => {
-        console.log(err);
-        alert("Something went wrong fetching the users: " + err);
-      });
-  }
-
-  render() {
-    return (
-      <Container>
-        <h2>Happy Coding! </h2>
-        <p>Get all users from secure end point:</p>
-        {!this.state.users ? (
-          <Spinner />
-        ) : (
-          <div>
-            <Users>
-              {this.state.users.map(user => {
-                return (
-                  <PlayerContainer key={user.id}>
-                    <Player user={user} />
-                  </PlayerContainer>
-                );
-              })}
-            </Users>
-            <Button
-              width="100%"
-              onClick={() => {
-                this.logout();
-              }}
-            >
-              Logout
-            </Button>
-          </div>
-        )}
-      </Container>
-    );
-  }
+    render() {
+        return (
+            <Container>
+                <h2>Happy Coding! </h2>
+                <p>Get all users from secure end point:</p>
+                {!this.state.users ? (
+                    <Spinner />
+                ) : (
+                    <div>
+                        <Users>
+                            {this.state.users.map(user => {
+                                return (
+                                    <PlayerContainer key={user.id}>
+                                        <Player user={user} />
+                                    </PlayerContainer>
+                                );
+                            })}
+                        </Users>
+                        <Button
+                            width="100%"
+                            onClick={() => {
+                                this.logout();
+                            }}
+                        >
+                            Logout
+                        </Button>
+                    </div>
+                )}
+            </Container>
+        );
+    }
 }
 
 export default withRouter(Game);
