@@ -102,7 +102,7 @@ class Login extends React.Component {
         if (returnedUser.status === 404 || returnedUser.status === 401) {
             this.setState({"requestValid": false});
             return;
-        } else if (returnedUser.status !== "ONLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
+        } else if (returnedUser.status !== "OFFLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
         this.setState({"requestValid": true});
         const user = new User(returnedUser);
         // store the token into the local storage
@@ -156,9 +156,10 @@ class Login extends React.Component {
             />
             <Label>Password</Label>
             <InputField
+                type={"password"}
               placeholder="Enter here.."
               onChange={e => {
-                this.handleInputChange("name", e.target.value);
+                this.handleInputChange("password", e.target.value);
               }}
               onKeyPress = { event => {
                   if (!this.state.username || !this.state.password) return;
@@ -170,7 +171,7 @@ class Login extends React.Component {
               <ErrorLabel display ={this.state.requestValid ? "none" : ""}>Incorrect username or password. </ErrorLabel>
             <ButtonContainer>
               <Button
-                disabled={!this.state.username || !this.state.name}
+                disabled={!this.state.username || !this.state.password}
                 width="50%"
                 onClick={() => {
                     this.login();

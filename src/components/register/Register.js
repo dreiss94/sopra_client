@@ -8,6 +8,7 @@ import {getDomain} from "../../helpers/getDomain";
 
 import User from "../shared/models/User";
 
+
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -22,11 +23,11 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 60%;
-  height: 535px;
   font-size: 16px;
   font-weight: 300;
   padding-left: 37px;
   padding-right: 37px;
+  padding-bottom: 30px;
   border-radius: 5px;
   background: linear-gradient(rgb(27, 124, 186), rgb(2, 46, 101));
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -58,7 +59,6 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-
 class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -69,10 +69,13 @@ class Register extends React.Component {
             passwordRepeat: null,
             passwordValid: true,
             requestValid: true
-
         }
     }
-    register() {
+    register(){
+        console.log(this.state.username)
+        console.log(this.state.name)
+        console.log(this.state.password)
+        console.log(this.state.birthday)
         fetch(`${getDomain()}/users`, {
             method: "POST",
             headers: {
@@ -87,13 +90,13 @@ class Register extends React.Component {
         })
             .then(response => response.json())
             .then(returnedUser => {
-                //handle error response
+                //handle errorresponses
                 if (returnedUser.status === 409) {
                     this.setState({"requestValid": false});
                     return;
                 }
 
-                this.props.history.push('/login');
+                this.props.history.push(`/login`);
             })
             .catch(err => {
                 if (err.message.match(/Failed to fetch/)) {
@@ -104,14 +107,8 @@ class Register extends React.Component {
             });
     }
     login() {
-        this.props.history.push('/login')
+        this.props.history.push(`/login`)
     }
-
-    /**
-     *  Every time the user enters something in the input field, the state gets updated.
-     * @param key (the key of the state for identifying the field that needs to be updated)
-     * @param value (the value that gets assigned to the identified state key)
-     */
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});
@@ -119,6 +116,8 @@ class Register extends React.Component {
     }
 
     handlePasswordValidation(value) {
+        // Example: if the key is username, this statement is the equivalent to the following one:
+        // this.setState({'username': value});
         if (value === this.state.password) {
             this.setState({"passwordRepeat": value});
             this.setState({"passwordValid": "true"});
@@ -127,22 +126,13 @@ class Register extends React.Component {
             this.setState({"passwordValid": null});
         }
     }
-
-    /**
-     * componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
-     * Initialization that requires DOM nodes should go here.
-     * If you need to load data from a remote endpoint, this is a good place to instantiate the network request.
-     * You may call setState() immediately in componentDidMount().
-     * It will trigger an extra rendering, but it will happen before the browser updates the screen.
-     */
     componentDidMount() {}
-
     render() {
         return (
             <BaseContainer>
                 <FormContainer>
                     <Form>
-                        <Title>Enter your credentials</Title>
+                        <Title>Enter your credentials!</Title>
                         <Label>Username</Label>
                         <ErrorLabel display={this.state.requestValid?"none":""}>username already existing.</ErrorLabel>
 
@@ -180,9 +170,16 @@ class Register extends React.Component {
                                         }
                                     }}
                         />
+                        <Label>Birthday</Label>
+                        <InputField type="date"
+                                    placeholder="Enter here.."
+                                    onChange={e => {
+                                        this.handleInputChange("birthday", e.target.value);
+                                    }}
+                        />
                         <ButtonContainer>
                             <Button
-                                disabled={!this.state.username || !this.state.name || !this.state.passwordValid || !this.state.password}
+                                disabled={!this.state.username || !this.state.name || !this.state.passwordValid || !this.state.password || !this.state.birthday}
                                 width="50%"
                                 onClick={() => {
                                     this.register();
