@@ -56,6 +56,12 @@ export const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
+const ErrorLabel = styled.label`
+  color: red;
+  margin-bottom: 10px;
+  display: ${props => (props.display)};
+`;
+
 /**
  * Classes in React allow you to have an internal state within the class and to have the React life-cycle for your component.
  * You should have a class (instead of a functional component) when:
