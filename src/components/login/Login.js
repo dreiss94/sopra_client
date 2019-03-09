@@ -73,29 +73,31 @@ class Login extends React.Component {
    * These fields are then handled in the onChange() methods in the resp. InputFields
    */
   constructor() {
-    super();
-    this.state = {
-      name: null,
-      username: null
-    };
+      super();
+      this.state = {
+          name: null,
+          username: null,
+          requestValid: true,
+      };
   }
   /**
    * HTTP POST request is sent to the backend.
    * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
    */
   login() {
-    fetch(`${getDomain()}/users`, {
-      method: "POST",
+      fetch(`${getDomain()}/users/${this.state.username}?pw=${this.state.password}`, {
+      method: "GET",
       headers: {
-        "Content-Type": "application/json"
+        Accept: "application/json"
       },
-      body: JSON.stringify({
-        username: this.state.username,
-        name: this.state.name
       })
-    })
       .then(response => response.json())
       .then(returnedUser => {
+        if (returnedUser.status === 404 || returnedUser.status === 401) {
+            this.setState({"requestValid": false});
+            return;
+        } else if (returnedUser.status !== "ONLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
+        this.setState({"requestValid": true});
         const user = new User(returnedUser);
         // store the token into the local storage
         localStorage.setItem("token", user.token);
@@ -146,13 +148,20 @@ class Login extends React.Component {
                 this.handleInputChange("username", e.target.value);
               }}
             />
-            <Label>Name</Label>
+            <Label>Password</Label>
             <InputField
               placeholder="Enter here.."
               onChange={e => {
                 this.handleInputChange("name", e.target.value);
               }}
+              onKeyPress = { event => {
+                  if (!this.state.username || !this.state.password) return;
+                  if (event.key === 'Enter') {
+                      this.login();
+                  }
+              }}
             />
+              <ErrorLabel display ={this.state.requestValid ? "none" : ""}>Incorrect username or password. </ErrorLabel>
             <ButtonContainer>
               <Button
                 disabled={!this.state.username || !this.state.name}

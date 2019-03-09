@@ -6,7 +6,7 @@ import {ButtonContainer, Label} from "../login/Login";
 import styled from "styled-components";
 import {getDomain} from "../../helpers/getDomain";
 
-//import User from "../shared/models/User";
+import User from "../shared/models/User";
 
 const FormContainer = styled.div`
   margin-top: 2em;
@@ -81,16 +81,18 @@ class Register extends React.Component {
             body: JSON.stringify({
                 username: this.state.username,
                 name: this.state.name,
-                password: this.state.password
+                password: this.state.password,
+                birthday: this.state.birthday
             })
         })
             .then(response => response.json())
             .then(returnedUser => {
                 //handle error response
-                if (returnedUser.status === 400) {
+                if (returnedUser.status === 409) {
                     this.setState({"requestValid": false});
                     return;
-                } else if (returnedUser.status !== "OFFLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
+                }
+
                 this.props.history.push('/login');
             })
             .catch(err => {
@@ -119,7 +121,7 @@ class Register extends React.Component {
     handlePasswordValidation(value) {
         if (value === this.state.password) {
             this.setState({"passwordRepeat": value});
-            this.setState({"passowrdValid": "true"});
+            this.setState({"passwordValid": "true"});
         }
         else {
             this.setState({"passwordValid": null});
