@@ -90,7 +90,7 @@ class Register extends React.Component {
         })
             .then(response => response.json())
             .then(returnedUser => {
-                //handle errorresponses
+                //handle error responses
                 if (returnedUser.status === 409) {
                     this.setState({"requestValid": false});
                     return;

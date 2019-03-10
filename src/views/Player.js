@@ -1,5 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { Button} from "./design/Button";
+import Profile from "../components/profile/Profile";
+import Game from "../components/game/Game";
 
 const Container = styled.div`
   margin: 6px 0;
@@ -9,6 +12,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid #ffffff26;
+  cursor: pointer;
 `;
 
 const UserName = styled.div`

@@ -32,9 +32,19 @@ class Game extends React.Component {
         };
     }
 
-    logout() {
+    logout(username) {
         localStorage.removeItem("token");
         this.props.history.push("/login");
+        fetch(`${getDomain()}/users/${username}/logout?token=${localStorage.getItem("token")}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    }
+
+    showProfile(user) {
+        this.props.history.push("/profile/" + user.id)
     }
 
     componentDidMount() {
@@ -66,8 +76,7 @@ class Game extends React.Component {
     render() {
         return (
             <Container>
-                <h2>Happy Coding! </h2>
-                <p>Get all users from secure end point:</p>
+                <h2>Users</h2>
                 {!this.state.users ? (
                     <Spinner />
                 ) : (
@@ -75,7 +84,9 @@ class Game extends React.Component {
                         <Users>
                             {this.state.users.map(user => {
                                 return (
-                                    <PlayerContainer key={user.id}>
+                                    <PlayerContainer key={user.id} onClick={() => {
+                                        this.showProfile(user)
+                                    }}>
                                         <Player user={user} />
                                     </PlayerContainer>
                                 );
@@ -84,7 +95,7 @@ class Game extends React.Component {
                         <Button
                             width="100%"
                             onClick={() => {
-                                this.logout();
+                                this.logout(this.state.username);
                             }}
                         >
                             Logout

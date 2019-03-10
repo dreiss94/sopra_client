@@ -81,8 +81,8 @@ class Login extends React.Component {
   constructor() {
       super();
       this.state = {
-          name: null,
           username: null,
+          password: null,
           requestValid: true,
       };
   }
@@ -91,31 +91,39 @@ class Login extends React.Component {
    * If the request is successful, a new user is returned to the front-end and its token is stored in the localStorage.
    */
   login() {
-      fetch(`${getDomain()}/users/${this.state.username}?pw=${this.state.password}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json"
-      },
+      console.log(this.state.username)
+      console.log(this.state.status)
+      console.log(this.state.password)
+      console.log(this.state.birthday)
+      fetch(`${getDomain()}/users/${this.state.username}/login?pw=${this.state.password}`, {
+          method: "GET",
+          headers: {
+              Accept: "application/json"
+          }
       })
-      .then(response => response.json())
-      .then(returnedUser => {
-        if (returnedUser.status === 404 || returnedUser.status === 401) {
-            this.setState({"requestValid": false});
-            return;
-        } else if (returnedUser.status !== "OFFLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
-        this.setState({"requestValid": true});
-        const user = new User(returnedUser);
-        // store the token into the local storage
-        localStorage.setItem("token", user.token);
-        // user login successfully worked --> navigate to the route /game in the GameRouter
-        this.props.history.push(`/game`);
-      })
-      .catch(err => {
-        if (err.message.match(/Failed to fetch/)) {
-          alert("The server cannot be reached. Did you start it?");
-        } else {
-          alert(`Something went wrong during the login: ${err.message}`);
-        }
+          .then(response => response.json())
+          .then(returnedUser => {
+                if (returnedUser.status === 404 || returnedUser.status === 401) {
+                    this.setState({"requestValid": false});
+                    return;
+                } else if (returnedUser.status !== "OFFLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
+                this.setState({"requestValid": true});
+                const user = new User(returnedUser);
+                // store the token into the local storage
+                localStorage.setItem("token", user.token);
+                /*localStorage.setItem("username", user.username);
+                localStorage.setItem("birthday", user.birthday);
+                localStorage.setItem("id", user.id);
+                */
+                // user login successfully worked --> navigate to the route /game in the GameRouter
+                this.props.history.push(`/game`);
+          })
+          .catch(err => {
+            if (err.message.match(/Failed to fetch/)) {
+                alert("The server cannot be reached. Did you start it?");
+            } else {
+                alert(`Something went wrong during the login: ${err.message}`);
+            }
       });
   }
   signup() {
