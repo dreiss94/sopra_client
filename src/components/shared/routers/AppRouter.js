@@ -8,6 +8,8 @@ import { ProfileGuard} from "../routeProtectors/ProfileGuard";
 import Login from "../../login/Login";
 import Register from "../../register/Register";
 import Profile from "../../profile/Profile";
+import Edit from "../../edit/Edit";
+
 
 /**
  * Main router of your application.
@@ -57,6 +59,13 @@ class AppRouter extends React.Component {
                     <ProfileGuard>
                         <Profile />
                     </ProfileGuard>
+                )}
+            />
+            <Route
+                path="/edit"
+                exact
+                render={() => (
+                    <Edit/>
                 )}
             />
             <Route path="/" exact render={() => <Redirect to={"/game"} />} />

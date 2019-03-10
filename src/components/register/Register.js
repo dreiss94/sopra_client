@@ -72,10 +72,12 @@ class Register extends React.Component {
         }
     }
     register(){
+
         console.log(this.state.username)
         console.log(this.state.name)
         console.log(this.state.password)
         console.log(this.state.birthday)
+
         fetch(`${getDomain()}/users`, {
             method: "POST",
             headers: {
@@ -88,27 +90,31 @@ class Register extends React.Component {
                 birthday: this.state.birthday
             })
         })
-            .then(response => response.json())
-            .then(returnedUser => {
-                //handle error responses
-                if (returnedUser.status === 409) {
-                    this.setState({"requestValid": false});
-                    return;
-                }
+        .then(response => response.json())
+        .then(returnedUser => {
+            //handle error responses
+            if (returnedUser.status === 409) {
+                this.setState({"requestValid": false});
+                return;
+            }
 
-                this.props.history.push(`/login`);
-            })
-            .catch(err => {
-                if (err.message.match(/Failed to fetch/)) {
-                    alert("The server cannot be reached. Did you start it?");
-                } else {
-                    alert(`Something went wrong during the login: ${err.message}`);
-                }
-            });
+            this.props.history.push(`/login`);
+        })
+        .catch(err => {
+             if (err.message.match(/Failed to fetch/)) {
+                alert("The server cannot be reached. Did you start it?");
+             } else {
+                 alert(`Something went wrong during the login: ${err.message}`);
+             }
+        });
     }
+
+
     login() {
         this.props.history.push(`/login`)
     }
+
+
     handleInputChange(key, value) {
         // Example: if the key is username, this statement is the equivalent to the following one:
         // this.setState({'username': value});

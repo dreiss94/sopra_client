@@ -106,15 +106,15 @@ class Login extends React.Component {
                 if (returnedUser.status === 404 || returnedUser.status === 401) {
                     this.setState({"requestValid": false});
                     return;
-                } else if (returnedUser.status !== "OFFLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
+                } else if (returnedUser.status !== "ONLINE") throw new Error(returnedUser.status + " - " + returnedUser.message);
                 this.setState({"requestValid": true});
                 const user = new User(returnedUser);
                 // store the token into the local storage
                 localStorage.setItem("token", user.token);
-                /*localStorage.setItem("username", user.username);
+                localStorage.setItem("username", user.username);
                 localStorage.setItem("birthday", user.birthday);
                 localStorage.setItem("id", user.id);
-                */
+
                 // user login successfully worked --> navigate to the route /game in the GameRouter
                 this.props.history.push(`/game`);
           })
