@@ -34,7 +34,7 @@ class Game extends React.Component {
 
     logout(username) {
         this.props.history.push("/login");
-        fetch(`${getDomain()}/users/${username}/logout?token=${localStorage.getItem("token")}`, {
+        fetch(`${getDomain()}/users/${localStorage.getItem("id")}/logout?token=${localStorage.getItem("token")}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -98,7 +98,7 @@ class Game extends React.Component {
                         <Button
                             width="100%"
                             onClick={() => {
-                                this.logout(this.state.username);
+                                this.logout();
                             }}
                         >
                             Logout

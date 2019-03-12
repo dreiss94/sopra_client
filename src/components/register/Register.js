@@ -6,9 +6,6 @@ import {ButtonContainer, Label} from "../login/Login";
 import styled from "styled-components";
 import {getDomain} from "../../helpers/getDomain";
 
-import User from "../shared/models/User";
-
-
 const FormContainer = styled.div`
   margin-top: 2em;
   display: flex;
@@ -72,11 +69,12 @@ class Register extends React.Component {
         }
     }
     register(){
-
+        /*
         console.log(this.state.username)
         console.log(this.state.name)
         console.log(this.state.password)
         console.log(this.state.birthday)
+        */
 
         fetch(`${getDomain()}/users`, {
             method: "POST",
@@ -93,7 +91,7 @@ class Register extends React.Component {
         .then(response => response.json())
         .then(returnedUser => {
             //handle error responses
-            if (returnedUser.status === 409) {
+            if (returnedUser.status === 400) {
                 this.setState({"requestValid": false});
                 return;
             }
@@ -107,6 +105,8 @@ class Register extends React.Component {
                  alert(`Something went wrong during the login: ${err.message}`);
              }
         });
+        /*console.log(this.state.status)
+        console.log(this.state.token)*/
     }
 
 
@@ -140,7 +140,7 @@ class Register extends React.Component {
                     <Form>
                         <Title>Enter your credentials!</Title>
                         <Label>Username</Label>
-                        <ErrorLabel display={this.state.requestValid?"none":""}>username already existing.</ErrorLabel>
+                        <ErrorLabel display={this.state.requestValid?"none":""}>username is already taken.</ErrorLabel>
 
                         <InputField
                             placeholder="Enter here.."

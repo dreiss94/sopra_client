@@ -53,7 +53,7 @@ class AppRouter extends React.Component {
                 )}
             />
             <Route
-                path="/profile"
+                path="/profile/:id"
                 exact
                 render={() => (
                     <ProfileGuard>
