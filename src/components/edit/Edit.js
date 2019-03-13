@@ -50,7 +50,7 @@ class Edit extends React.Component {
 
     submit(){
         fetch(`${getDomain()}/users/${localStorage.getItem("id")}?token=${localStorage.getItem("token")}`, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
                 "Access-Control-Allow-Origin": "*"

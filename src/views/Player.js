@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-import { Button} from "./design/Button";
-import Profile from "../components/profile/Profile";
-import Game from "../components/game/Game";
+//import { Button} from "./design/Button";
+//import Profile from "../components/profile/Profile";
+//import Game from "../components/game/Game";
 
 const Container = styled.div`
   margin: 6px 0;
   width: 280px;
-  padding: 10px;
+  padding: 10px;s
   border-radius: 6px;
   display: flex;
   align-items: center;
